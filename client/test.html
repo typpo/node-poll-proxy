@@ -1,0 +1,19 @@
+<script src="socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:8080');
+
+  socket.on('poll-response', function (status, data) {
+    console.log(data);
+  });
+
+  socket.emit('get', {
+    channel: 'poll-response',
+    interval: 500,
+    backoff: false,
+    max: 40,
+    url: 'http://www.google.com/ig/calculator?hl=en&q=1USD=?KRW',
+  },
+  function(obj) {
+    return obj.error == '';
+  });
+</script>
