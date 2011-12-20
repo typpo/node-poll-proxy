@@ -14,9 +14,11 @@ app.configure('development', function(){
 });
 
 // Dnode setup
-var server = dnode({
-  get: function (data, predicate, cb) {
-         console.log(predicate.toString());
+var server = dnode(function(client){
+  console.log(client);
+  this.get = function(data, cb) {
+    cb(true, client.test());
+    return;
     u = url.parse(data.url);
     //TODO these options:
     //    interval: 500,
@@ -45,7 +47,10 @@ var server = dnode({
           cb(false);
           return;
         }
-        if (predicate(obj)) {
+
+        // Test if polling is complete
+        console.log(client.request_complete_predicate.toString());
+        if (client.request_complete_predicate(obj)) {
           console.log('write on ' + data.event);
           cb(true, obj);
         }
@@ -55,10 +60,9 @@ var server = dnode({
       });
     }).on('error', function(e){
       console.log("Got error: " + e.message);
-    })
-  }
-});
-server.listen(app);
+    }); // end http get
+  } // end dnode.get
+}).listen(app); // end server dnode creation
 
 
 /*

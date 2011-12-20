@@ -12,25 +12,31 @@
   */
 
   console.log('a');
+
   var server = undefined;
-  // TODO dnode workers?
-  DNode.connect(8080, function (remote) {
-    server = remote;
-    remote.get({
-      event: 'poll-response',
-      interval: 500,
-      backoff: false,
-      max: 40,
-      url: 'http://search.twitter.com/search.json?q=blue%20angels&amp;rpp=5&amp;include_entities=true&amp;result_type=mixed',
-    },
-    function(obj) {
-      return true;
-    },
-    function(status, result) {
-      console.log(status);
-      console.log(result);
+  window.onload = function() {
+    DNode({
+        request_complete_predicate: function(obj) {
+          return true;
+        },
+        test: function() {
+          return 5;
+        }
+      }).connect(8080, function(remote) {
+      server = remote;
+      remote.get({
+        event: 'poll-response',
+        interval: 500,
+        backoff: false,
+        max: 40,
+        url: 'http://search.twitter.com/search.json?q=blue%20angels&amp;rpp=5&amp;include_entities=true&amp;result_type=mixed',
+      },
+      function(status, result) {
+        console.log(status);
+        console.log(result);
+      });
     });
-  });
+  };
 
 
   /*
