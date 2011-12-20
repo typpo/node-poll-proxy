@@ -1,0 +1,12 @@
+{
+    "name": "socket.io"
+  , "dependencies": {
+        "socket.io-client": "0.8.7"
+      , "http-proxy": "0.7.6"
+      , "express": "2.5.2"
+    }
+  , "devDependencies": {
+    }
+  , "main": "app"
+  , "engines": { "node": ">= 0.4.0" }
+}
