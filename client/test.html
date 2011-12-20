@@ -1,19 +1,58 @@
-<script src="socket.io.js"></script>
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/dnode.js"></script>
 <script>
-  var socket = io.connect('http://localhost:8080');
+  /*
+  var socket = io.connect('http://localhost', {port: 8080});
 
   socket.on('poll-response', function (status, data) {
-    console.log(data);
+    console.log('got resp');
+  });
+  */
+
+  console.log('a');
+  var server = undefined;
+  // TODO dnode workers?
+  DNode.connect(8080, function (remote) {
+    server = remote;
+    remote.get({
+      event: 'poll-response',
+      interval: 500,
+      backoff: false,
+      max: 40,
+      url: 'http://search.twitter.com/search.json?q=blue%20angels&amp;rpp=5&amp;include_entities=true&amp;result_type=mixed',
+    },
+    function(obj) {
+      return true;
+    },
+    function(status, result) {
+      console.log(status);
+      console.log(result);
+    });
   });
 
+
+  /*
   socket.emit('get', {
-    channel: 'poll-response',
+    event: 'poll-response',
     interval: 500,
     backoff: false,
     max: 40,
-    url: 'http://www.google.com/ig/calculator?hl=en&q=1USD=?KRW',
+    url: 'http://search.twitter.com/search.json?q=blue%20angels&amp;rpp=5&amp;include_entities=true&amp;result_type=mixed',
   },
   function(obj) {
     return obj.error == '';
   });
+
+  socket.emit('get', function() {
+    return 'remote';
+
+  });
+  */
 </script>
+</head>
+<body>
+
+</body>
+</html>
