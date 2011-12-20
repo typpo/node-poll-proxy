@@ -13,12 +13,16 @@ app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
+var js = require('dnode/web').route;
+app.get('/dnode.js', function(req, res) {
+  res.send(js, {'Content-Type': 'text/javascript'}, 200);
+});
+
 // Dnode setup
 var server = dnode(function(client){
-  console.log(client);
   this.get = function(data, cb) {
     cb(true, client.test());
-    return;
+
     u = url.parse(data.url);
     //TODO these options:
     //    interval: 500,
@@ -62,7 +66,7 @@ var server = dnode(function(client){
       console.log("Got error: " + e.message);
     }); // end http get
   } // end dnode.get
-}).listen(app); // end server dnode creation
+}).listen(8081); // end server dnode creation
 
 
 /*
