@@ -2,7 +2,6 @@
     "name": "socket.io"
   , "dependencies": {
         "socket.io-client": "0.8.7"
-      , "http-proxy": "0.7.6"
       , "express": "2.5.2"
       , "dnode": "0.9.3"
     }
