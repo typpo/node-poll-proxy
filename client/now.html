@@ -2,7 +2,17 @@
 
 <script type="text/javascript">
   now.ready(function(){
-    // "Hello World!" will print on server
-    now.logStuff("Hello World!");
+      now.get({
+        url: 'http://search.twitter.com/search.json?q=blue%20angels&rpp=5&include_entities=true&result_type=mixed'
+      },
+      function(data) {
+        console.log(data);
+        console.log(('results_per_page' in data));
+        return ('results_per_page' in data);
+      },
+      function(data) {
+        console.log('done');
+        console.log(data);
+      });
   });
 </script>
