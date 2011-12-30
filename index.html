@@ -5,7 +5,7 @@
     window.onload = function () {
       DNode({
         test: function(f) {
-          f('butt cheese');
+        f(function(){ return 'bark bark'; });
         }
           }).connect(function (remote) {
             remote.cat(function (says) {
