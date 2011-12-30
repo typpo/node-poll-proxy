@@ -40,17 +40,11 @@ everyone.now.get = function(data, predicate, cb) {
         return;
       }
 
-      console.log(('results_per_page' in obj));
-      console.log(predicate(obj));
-
-      // Test if polling is complete
-      if (predicate(obj)) {
-        console.log('write on ' + data.event);
+      predicate(obj, function(status) {
+        // if polling is complete
+        console.log('poll results complete');
         cb(true, obj);
-      }
-      else {
-        console.log('suppressing response due to no predicate match');
-      }
+      });
     });
   }).on('error', function(e){
     console.log("Got error: " + e.message);

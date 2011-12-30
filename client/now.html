@@ -5,14 +5,16 @@
       now.get({
         url: 'http://search.twitter.com/search.json?q=blue%20angels&rpp=5&include_entities=true&result_type=mixed'
       },
-      function(data) {
+      function(data, cb) {
         console.log(data);
         console.log(('results_per_page' in data));
-        return ('results_per_page' in data);
+        if ('results_per_page' in data) {
+          cb(true);
+        }
       },
-      function(data) {
+      function(status, data) {
         console.log('done');
-        console.log(data);
+        document.write(JSON.stringify(data));
       });
   });
 </script>
