@@ -12,10 +12,6 @@ everyone.now.logStuff = function(msg){
 
 everyone.now.get = function(data, poll_status_check, cb) {
   var u = url.parse(data.url);
-  //TODO add these options:
-  //    interval: 500,
-  //    backoff: false,
-  //    max: 40,
   var options = {
     host: u.host,
     port: 80,
@@ -28,7 +24,9 @@ everyone.now.get = function(data, poll_status_check, cb) {
   console.log('get ' + u.host + options.path);
   var repeat = true;
   var interval = options.interval;
+  var count = 0;
   (function poll() {
+    count++;
     http.get(options, function(resp){
       var chunks = [];
       resp.on('data', function(chunk){
@@ -50,6 +48,10 @@ everyone.now.get = function(data, poll_status_check, cb) {
             repeat = false;
             console.log('poll results complete');
             cb(true, obj);
+          }
+          if (count >= options.max) {
+            cb(false);
+            return;
           }
           if (repeat) {
             console.log('polling...');
