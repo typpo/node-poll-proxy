@@ -2,13 +2,7 @@ var express = require('express');
 var server = express.createServer();
 var url = require('url');
 var http = require('http');
-
-var nowjs = require("now");
-var everyone = nowjs.initialize(server);
-
-everyone.now.logStuff = function(msg){
-    console.log(msg);
-}
+var everyone = require('now').initialize(server);
 
 everyone.now.get = function(data, poll_status_check, cb) {
   var u = url.parse(data.url);
