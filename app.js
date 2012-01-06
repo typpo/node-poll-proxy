@@ -16,9 +16,9 @@ everyone.now.get = function(data, poll_status_check, cb) {
     host: u.host,
     port: 80,
     path: u.pathname + u.search,
-    interval: 500,
-    backoff: false,
-    max: 40,
+    interval: data.interval || 500,
+    backoff: data.backoff || false,
+    max: data.max || 40,
   };
 
   console.log('get ' + u.host + options.path);
