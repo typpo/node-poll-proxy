@@ -20,12 +20,15 @@ everyone.now.get = function(data, poll_status_check, cb) {
     host: u.host,
     port: 80,
     path: u.pathname + u.search,
+    interval: 500,
+    backoff: false,
+    max: 40,
   };
-  console.log('get ' + u.host);
-  console.log(options.path);
 
+  console.log('get ' + u.host + options.path);
   var repeat = true;
-  while (repeat) {
+  var interval = options.interval;
+  (function poll() {
     http.get(options, function(resp){
       var chunks = [];
       resp.on('data', function(chunk){
@@ -48,12 +51,19 @@ everyone.now.get = function(data, poll_status_check, cb) {
             console.log('poll results complete');
             cb(true, obj);
           }
-        });
-      });
+          if (repeat) {
+            console.log('polling...');
+            if (options.backoff) {
+              interval *= interval;
+            }
+            setTimeout(function() { poll(); }, interval);
+          }
+        }); // end poll_status_check
+      }); // end http.get on end
     }).on('error', function(e){
       console.log("Got error: " + e.message);
     }); // end http get
-  }
+  })() // end poll
 } // end everyone.now.get
 
 server.use(express.static(__dirname + '/client'));
