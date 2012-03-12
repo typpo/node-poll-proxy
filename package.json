@@ -9,4 +9,5 @@
     }
   , "main": "app"
   , "engines": { "node": ">= 0.4.0" }
+  , "version": "0.0.1"
 }
